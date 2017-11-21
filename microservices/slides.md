@@ -126,6 +126,8 @@ to split services.
 
 The key elements of design (just like software!):
 
+---
+
 - Loose coupling
 
 I.e. when one microservice changes, you don't have to change another.
@@ -134,11 +136,24 @@ Beware of knock on-changes.
 
 Design for "if I were to change this, how would it affect the rest of the system"
 
+---
+
 - High Cohesion
 
 Related concepts should live together.
 
 If we do have to make changes, they should occur in one place only.
+
+---
+
+### Aside: Conway's Law
+
+*organizations which design systems ... are constrained to produce designs which are copies of the
+communication structures of these organizations*
+
+Melvin Conway
+
+<img width="400" src="img/mel_conway.jpg">
 
 ---
 
@@ -156,6 +171,8 @@ Internally, the software models the domain in detail.
 
 But at the interface, the boundary, there is only a small API. Like a cell.
 
+Board example. **This is really important**
+
 ---
 
 #### Other DDD concepts
@@ -164,11 +181,12 @@ But at the interface, the boundary, there is only a small API. Like a cell.
     - Entities
     - Value
 - Types of operator
-  - Repositoy
+  - Repository
   - Service
   - Factory
 - Collections of objects
   - Aggregate
+  - Root aggregate is usually an Entity
 
 DDD is a definite recommendation for all software engineers.
 
@@ -183,6 +201,8 @@ Imagine a service that places orders. Once the order is placed we need to:
 - Charge a credit card
 
 If the service initiates these things, we say it is orchestrated.
+
+---
 
 If we emit an event to say that something has been ordered, others can subscribe to that event and
 process the event when they want to. This is called choreographed.
@@ -202,6 +222,9 @@ To the extreme: event sourcing.
   - Usually used with HTTP (GET, PUT, POST, DELETE, PATCH)
   - Generally quite slow
   - Human readable, simple.
+
+---
+
 - RPC
   - Originally used to _remotely call_ procedures. I.e. tell the remote how to do it's job. (Would
     you do this when asking for a coffee?)
@@ -311,6 +334,8 @@ your bounded context. I.e. into your microservice.
 Then if you need to make changes/improvements to your domain, you can simply update the front-end
 code too.
 
+---
+
 Contentious because it merges the front-end and back-end roles. Disciplines that have different
 technical requirements. (Graphic design anyone?)
 
@@ -360,17 +385,6 @@ Search for minimalism in everything you do:
 - Code
 - Features
 - Data
-
----
-
-## Conway's Law
-
-*organizations which design systems ... are constrained to produce designs which are copies of the
-communication structures of these organizations*
-
-Melvin Conway
-
-<img width="400" src="img/mel_conway.jpg">
 
 ---
 
@@ -456,8 +470,13 @@ Ideally, a pyramid of tests. From top to bottom:
 
 Have specific training material on CI/CD.
 
-But each microservice should have it's own Git repository. It's own pipeline. And should be
-independently deployable (not always possible).
+Each microservices should:
+
+- have its own Git repository
+- run its own Pipeline
+- Be independently deployable
+
+---
 
 Remember each microservice is the responsibility of a team.
 
@@ -472,6 +491,8 @@ So each team should be empowered with their own set of tools.
 - Simplest and easiest to keep configuration in Git if possible (e.g. k8s ConfigMaps)
 
 May be domain specific requirements for configuration.
+
+---
 
 ### Application Configuration
 
@@ -488,10 +509,7 @@ infrastructure and re-applying your application configuration.
 All of this brings lots of new issues, and new things to think about:
 
 - Service discovery
-  - DNS
-  - Consul
-  - Zookeeper
-  - Eureka
+  - DNS, Consul, Zookeeper, Eureka
 - Autoscaling
   - Machine level, service level (see kubernetes)
 - Monitoring
@@ -514,4 +532,33 @@ Etc. Etc.
 - Isolate and expect failure
 - Start monolithic, break out later
 - Domain driven design
+
+---
+
+### Books
+
+Domain Driven Design - Dan Evans: A bit dry and hard to read. Consider getting one of the "Using
+DDD" books.
+
+Building Microservices - Sam Newman: Nice overview, code/tool agnostic.
+
+---
+
+## Hands On
+
+Designing microservices seems to be a lot harder than building them.
+
+Get the design wrong and you will struggle to build them.
+
+---
+
+- Split into teams of 2-4, no more than four. Everyone should have input.
+- You have to design a new system for an eCommerce website to sell something exciting.
+- Come up with a few use cases, from those use cases:
+  - Model the domain, what are the entities? The value objects? Repositories and Aggregate roots?
+  - Model the contexts, where are the different contexts? Are there clear boundaries.
+  - Separate the contexts into microservices
+  - Include simplified UML diagrams (nothing official) of one or two (communicating) microservices
+
+One of your team will present your results.
 
