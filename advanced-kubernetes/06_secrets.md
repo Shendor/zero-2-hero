@@ -76,7 +76,7 @@ One word of warning here, in case it’s not obvious: `secret.yaml` should never
 
 ### Working with secrets
 
-A secret volume is used to pass sensitive information, such as passwords, to pods. You can store secrets in the Kubernetes API and mount them as files for use by pods without coupling to Kubernetes directly. 
+A secret volume is used to pass sensitive information, such as passwords, to pods. You can store secrets in the Kubernetes API and mount them as files for use by pods without coupling to Kubernetes directly.
 
 Secret volumes are backed by tmpfs (a RAM-backed filesystem) so they are never written to non-volatile storage.
 Important: You must create a secret in the Kubernetes API before you can use it
@@ -88,7 +88,7 @@ We'll serve a webpage via a Volume using secrets. This is definitely the wrong w
 ### Creating a Secret Using kubectl create secret
 
 ```
-kubectl create secret generic index --from-file=config/secrets/index.html
+kubectl create secret generic index --from-file=configs/secrets/index.html
 ```
 
 Validate that it's been created:
@@ -119,7 +119,7 @@ Note that neither get nor describe shows the contents of the file by default
 ### Create a nginx pod
 
 ```
-kubectl create -f config/secrets/nginx-controller.yaml
+kubectl create -f configs/secrets/nginx-controller.yaml
 ```
 
 ---
@@ -147,10 +147,10 @@ or just with your editor
 
 ```
 kubectl delete secret index
-kubectl create secret generic index --from-file=config/secrets/index.html
+kubectl create secret generic index --from-file=configs/secrets/index.html
 ```
 
-Mounted Secrets are updated automatically but it's using its local ttl-based cache for getting the current value of the secret. The total time is kubelet sync period + ttl of secrets cache in kubelet (~1min). But as we can't do at the moment `kubectl apply --from-file` this isn' working. 
+Mounted Secrets are updated automatically but it's using its local ttl-based cache for getting the current value of the secret. The total time is kubelet sync period + ttl of secrets cache in kubelet (~1min). But as we can't do at the moment `kubectl apply --from-file` this isn' working.
 
 ---
 
